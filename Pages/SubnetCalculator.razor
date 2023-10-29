@@ -1,0 +1,49 @@
+﻿@page "/SubnetCalculator"
+
+<h1>Subnet Calculator</h1>
+
+<h3>Base Network Address</h3> <br />
+<input type="text" id="baseNetAddr1" value="192" size="3" /> . 
+<input type="text" id="baseNetAddr2" value="168" size="3" /> .
+<input type="text" id="baseNetAddr3" value="1" size="3" /> .
+<input type="text" id="baseNetAddr4" value="0" size="3" />
+<br /> <br />
+
+<h3>Subnet Mask/CIDR</h3>
+@*Option to switch between subnetmask and CIDR*@
+<button type="button" name="selectedValue" @onclick="@(e => {if(selectedValue=="Use Subnet Mask") {selectedValue = "Use CIDR";}else{selectedValue = "Use Subnet Mask";}})">@selectedValue</button>
+<br />
+@if (selectedValue == "Use CIDR")
+{
+	<div id="subnetMaskIn" >
+		<input type="text" id="subnetMask1" value="255" size="3" /> . 
+		<input type="text" id="subnetMask2" value="255" size="3" /> . 
+		<input type="text" id="subnetMask3" value="255" size="3" /> . 
+		<input type="text" id="subnetMask4" value="0" size="3" />
+	</div>
+}
+else
+{
+	<div id="cidrIn" >
+		<input type="text" id="cidr" value="24" size="3"/>
+	</div>
+}
+
+<br /> <br />
+<h3>Host Requirements</h3>
+<h4 style="display:inline-block;">Number of Subnets:</h4>
+<input type="text" id="numSubnets" size="3" value=@numSubnets @onchange="@(e => {numSubnets =int.Parse(e.Value.ToString()); numHosts = new int[numSubnets];})"/>
+<h4>Number of Hosts in</h4>
+
+@for (int i = 1; i <= numSubnets; i++)
+{
+	<h5 style="display:inline-block;">Subnet @i:</h5>
+	<input type="text" id="numHosts@i" value=@numHosts[i] size="3" @onchange="@(e => {numHosts[i] = int.Parse(e.Value.ToString());})" />
+	<br />
+}
+
+@code {
+	private string selectedValue = "Use Subnet Mask";
+	private int numSubnets = 1;
+	private int[] numHosts = new int[1];
+}
