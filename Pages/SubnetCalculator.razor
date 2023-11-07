@@ -1,4 +1,5 @@
 ﻿@page "/SubnetCalculator"
+<PageTitle>ITBoxWeb: Subnet Calculator</PageTitle>
 
 <h1>Subnet Calculator</h1>
 
@@ -29,17 +30,28 @@ else
 	</div>
 }
 
+@if (numHosts == null) {
+	Console.WriteLine("creating new list");
+	numSubnets = 1;
+	numHosts = new List<int>() { 0 };
+}
+
 <br /> <br />
 <h3>Host Requirements</h3>
 <h4 style="display:inline-block;">Number of Subnets:</h4>
 <input type="text" id="numSubnets" size="3" value=@numSubnets @onchange="@(e => {
+	if (numHosts == null) {
+	Console.WriteLine("creating new list");
+	numSubnets = 1;
+	numHosts = new List<int>() { 0 };
+	}
 	numSubnets =int.Parse(e.Value.ToString());
 	int dif = numHosts.Count() - numSubnets;
 	Console.WriteLine("Dif: " + dif);
 	List<int> temp = new List<int>();
 	for(int i = 0; i < numHosts.Count(); i++) {
 		Console.WriteLine("NumHosts"+i+": " + numHosts[i]);
-		temp[i] = numHosts[i];
+		temp.Add(numHosts[i]);
 		numHosts[i] = 0;
 	}
 	if(dif > 0) {
@@ -60,17 +72,17 @@ else
 })"/>
 <h4>Number of Hosts in</h4>
 
-@for (int i = 0; i < numHosts.Count(); i++) {
-	Console.WriteLine("NumSubnets: " + numHosts.Count());
-	<h5 style="display:inline-block;">Subnet @(i+1):</h5>
-	<input type="text" id="numHosts@i" size="3" value=@numHosts[i] @onchange="@(e => {numHosts[i] = int.Parse(e.Value.ToString());})" />
+@for (int i = 0; i <= numHosts.Count(); i++) {
+	Console.WriteLine("Subnet " + (i+1) + " out of "+numHosts.Count()+": " + numHosts[i]);
+	<label for="@($"numHosts{i}")">Subnet @(i)</label>
+	<input id="@($"numHosts{i}")" value="@numHosts[i]" @onchange="@(e => {numHosts[i] = int.Parse(e.Value.ToString());})" />
+	Console.WriteLine("Subnet " + (i + 1) + " out of " + numHosts.Count() + ": " + numHosts[i]);
 	<br />
-	Console.WriteLine("Subnet " + i + ": " + numHosts[i]);
 }
 <br />
 
 @code {
 	private string selectedValue = "Use Subnet Mask";
-	private int numSubnets = 2;
-	private List<int> numHosts = new List<int>();
+	private int numSubnets;
+	private List<int> numHosts;
 }
