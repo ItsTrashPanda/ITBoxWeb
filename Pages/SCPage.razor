@@ -1,0 +1,86 @@
+﻿@using ITBoxWeb.Shared.Tools.SubnetCalculatorData;
+
+@page "/SubnetCalculator"
+<PageTitle>ITBoxWeb: Subnet Calculator</PageTitle>
+
+<h1>Subnet Calculator</h1>
+
+<h3>Base Network Address</h3> <br />
+<input type="text" id="baseNetAddr1" @bind="baseNetAddr[0]" size="3" /> . 
+<input type="text" id="baseNetAddr2" @bind="baseNetAddr[1]" size="3" /> .
+<input type="text" id="baseNetAddr3" @bind="baseNetAddr[2]" size="3" /> .
+<input type="text" id="baseNetAddr4" @bind="baseNetAddr[3]" size="3" />
+<br /> <br />
+
+<h3>Subnet Mask/CIDR</h3>
+@*Option to switch between subnetmask and CIDR*@
+<button type="button" name="selectedValue" @onclick="@(e => {if(selectedValue=="Use Subnet Mask") {selectedValue = "Use CIDR";}else{selectedValue = "Use Subnet Mask";}})">@selectedValue</button>
+<br />
+@if (selectedValue == "Use CIDR")
+{
+	<div id="subnetMaskIn" >
+		<input type="text" id="subnetMask1" value="255" size="3" /> . 
+		<input type="text" id="subnetMask2" value="255" size="3" /> . 
+		<input type="text" id="subnetMask3" value="255" size="3" /> . 
+		<input type="text" id="subnetMask4" value="0" size="3" />
+	</div>
+}
+else
+{
+	<div id="cidrIn" >
+		<input type="text" id="cidr" value="24" size="3"/>
+	</div>
+}
+
+<br />
+<br />
+<h3>Host Requirements</h3>
+<h4 style="display:inline-block;">Number of Subnets:</h4>
+<input type="number" value="@numSubnets" @oninput="onchange_numSubnets" />
+<h4>Number of Hosts in</h4>
+@foreach (var i in Enumerable.Range(0, numSubnets))
+{
+	<h5 style="display:inline-block;">Subnet @i:</h5>
+	<input type="number" value="@numHosts[i]" @oninput="(e) => setlist(i, e)" />
+	<br>
+}
+
+<button type="button" name="calculate" @onclick="@(e => {subnets = SubnetCalculator.Calculate(new NetAddress(baseNetAddr),numHosts); calculatedNumSubnets = numSubnets;})">Calculate</button>
+<br />
+
+@foreach (var i in Enumerable.Range(0, calculatedNumSubnets)) {
+	<h3>Subnet @i</h3>
+	<h4>Network Address: @subnets[i].NetAddress</h4>
+	<h4>Broadcast Address: @subnets[i].BroadcastAddress</h4>
+	<h4>First Host Address: @subnets[i].FirstHostAddress</h4>
+	<h4>Last Host Address: @subnets[i].LastHostAddress</h4>
+	<h4>Number of Hosts: @subnets[i].HostsCount</h4>
+	<h4>Subnet Mask: @subnets[i].NetMask</h4>
+	<h4>CIDR: @subnets[i].cidr</h4>
+	<br />
+}
+
+@code {
+	private string selectedValue = "Use Subnet Mask";
+	private byte[] baseNetAddr = new byte[]{192, 168, 1, 0};
+	private int numSubnets = 1;
+	private int calculatedNumSubnets = 0;
+	private List<int> numHosts = new List<int>() { 0 };
+	private Subnet[] subnets = new Subnet[1] { new Subnet(new NetAddress(new byte[] { 192, 168, 1, 0 }), new NetAddress(new byte[] { 255, 255, 255, 0 })) };
+
+	//dynamic input
+	private void onchange_numSubnets(ChangeEventArgs e)
+	{
+		numSubnets = 1;
+		if (Int32.TryParse(e.Value.ToString(), out int n)) numSubnets = n;
+		numHosts.Clear();
+		numHosts.AddRange(Enumerable.Range(0, numSubnets).Select(_ => 0));
+		StateHasChanged();
+	}
+	private void setlist(int i, ChangeEventArgs e)
+	{
+		var n = 0;
+		if (Int32.TryParse(e.Value.ToString(), out int auxn)) n = auxn;
+		numHosts[i] = n;
+	}
+}
