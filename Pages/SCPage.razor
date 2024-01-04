@@ -50,12 +50,12 @@ else
 
 @foreach (var i in Enumerable.Range(0, calculatedNumSubnets)) {
 	<h3>Subnet @i</h3>
-	<h4>Network Address: @subnets[i].NetAddress</h4>
-	<h4>Broadcast Address: @subnets[i].BroadcastAddress</h4>
-	<h4>First Host Address: @subnets[i].FirstHostAddress</h4>
-	<h4>Last Host Address: @subnets[i].LastHostAddress</h4>
+	<h4>Network Address: @subnets[i].NetAddress.ToString()</h4>
+	<h4>Broadcast Address: @subnets[i].BroadcastAddress.ToString()</h4>
+	<h4>First Host Address: @subnets[i].FirstHostAddress.ToString()</h4>
+	<h4>Last Host Address: @subnets[i].LastHostAddress.ToString()</h4>
 	<h4>Number of Hosts: @subnets[i].HostsCount</h4>
-	<h4>Subnet Mask: @subnets[i].NetMask</h4>
+	<h4>Subnet Mask: @subnets[i].NetMask.ToString()</h4>
 	<h4>CIDR: @subnets[i].cidr</h4>
 	<br />
 }

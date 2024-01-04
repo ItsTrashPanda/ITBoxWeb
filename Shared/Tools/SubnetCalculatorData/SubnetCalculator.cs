@@ -8,7 +8,10 @@
 			NetAddress lastAddr = startingAddr;
 			for (int i = 0; i < hostReqs.Count; i++)
 			{
-				subnets[i] = new Subnet(lastAddr, Subnet.netMaskFromCidr((int)Math.Ceiling(Math.Log2(hostReqs[i]))));
+				Console.WriteLine(hostReqs[i]);
+				int temp = (int)Math.Ceiling(Math.Log2(hostReqs[i]));
+				Console.WriteLine(temp);
+				subnets[i] = new Subnet(lastAddr, Subnet.netMaskFromCidr(temp));
 				lastAddr = subnets[i].BroadcastAddress.incrementOne();
 			}
 			return subnets;

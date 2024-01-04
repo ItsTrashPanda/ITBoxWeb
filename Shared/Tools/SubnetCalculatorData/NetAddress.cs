@@ -28,7 +28,12 @@ namespace ITBoxWeb.Shared.Tools.SubnetCalculatorData
 
 		public NetAddress incrementOne()
 		{
-			return new NetAddress((byteAddress[0] << 24) | (byteAddress[1] << 16) | (byteAddress[2] << 8) | byteAddress[3]);
+			return new NetAddress(((byteAddress[0] << 24) | (byteAddress[1] << 16) | (byteAddress[2] << 8) | byteAddress[3])+1);
+		}
+
+		public String ToString()
+		{
+			return address;
 		}
 	}
 }

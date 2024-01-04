@@ -15,10 +15,13 @@
 			NetAddress = netAddr;
 			NetMask = netMask;
 			cidr = cidrFromNetMask(NetMask);
-			BroadcastAddress = new NetAddress(netAddr.intAddress | ~netMask.intAddress);
+			Console.WriteLine(netMask.intAddress);
+			BroadcastAddress = new NetAddress(netAddr.intAddress + ~netMask.intAddress);
+			Console.WriteLine(netMask.intAddress);
 			FirstHostAddress = netAddr.incrementOne();
 			LastHostAddress = new NetAddress(BroadcastAddress.intAddress - 1);
-			HostsCount = LastHostAddress.intAddress - FirstHostAddress.intAddress + 1;
+			HostsCount = ~netMask.intAddress - 1;
+			Console.WriteLine(netMask.intAddress);
 		}
 
 		public Subnet(NetAddress netAddr, int cidr)
@@ -50,9 +53,9 @@
 			int mask = 0;
 			for (int i = 0; i < cid; i++)
 			{
-				mask |= 1 << (31 - i);
+				mask |= 1 << (i);
 			}
-			return new NetAddress(mask);
+			return new NetAddress(~mask);
 		}
 	}
 }
