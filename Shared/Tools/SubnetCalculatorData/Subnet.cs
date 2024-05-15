@@ -15,13 +15,13 @@
 			NetAddress = netAddr;
 			NetMask = netMask;
 			cidr = cidrFromNetMask(NetMask);
-			Console.WriteLine(netMask.intAddress);
+			Console.WriteLine("mask: "+netMask.intAddress);
 			BroadcastAddress = new NetAddress(netAddr.intAddress + ~netMask.intAddress);
-			Console.WriteLine(netMask.intAddress);
+			Console.WriteLine("mask: " + netMask.intAddress);
 			FirstHostAddress = netAddr.incrementOne();
 			LastHostAddress = new NetAddress(BroadcastAddress.intAddress - 1);
 			HostsCount = ~netMask.intAddress - 1;
-			Console.WriteLine(netMask.intAddress);
+			Console.WriteLine("mask: " + netMask.intAddress);
 		}
 
 		public Subnet(NetAddress netAddr, int cidr)

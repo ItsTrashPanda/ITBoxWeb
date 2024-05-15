@@ -4,28 +4,32 @@
 <PageTitle>ITBoxWeb: Subnet Calculator</PageTitle>
 
 <h1>Subnet Calculator</h1>
+<br />
 
-<h3>Base Network Address</h3> <br />
-<input type="text" id="baseNetAddr1" @bind="baseNetAddr[0]" size="3" min="0" max="255" /> . 
-<input type="text" id="baseNetAddr2" @bind="baseNetAddr[1]" size="3" min="0" max="255" /> .
-<input type="text" id="baseNetAddr3" @bind="baseNetAddr[2]" size="3" min="0" max="255" /> .
-<input type="text" id="baseNetAddr4" @bind="baseNetAddr[3]" size="3" min="0" max="255" />
+<h3>Base Network Address</h3>
+<input type="text" id="baseNetAddr1" @bind="baseNetAddr[0]" size="3" /> . 
+<input type="text" id="baseNetAddr2" @bind="baseNetAddr[1]" size="3" /> .
+<input type="text" id="baseNetAddr3" @bind="baseNetAddr[2]" size="3" /> .
+<input type="text" id="baseNetAddr4" @bind="baseNetAddr[3]" size="3" />
 <br /> <br />
 
 <h3>Host Requirements</h3>
 <h4 style="display:inline-block;">Number of Subnets:</h4>
-<input type="number" value="@numSubnets" min="1" @oninput="onchange_numSubnets" />
+<input type="number" value="@numSubnets" min="1" max="99" @oninput="onchange_numSubnets" />
 <h4>Number of Hosts in</h4>
 <h5 style="display:inline-block;">Subnet 0:</h5>
-<input type="number" value="@numHosts[0]" min="1" @oninput="(e) => setlist(0, e)" />
-@foreach (var i in Enumerable.Range(0, numSubnets))
-{
-	<h5 style="display:inline-block;">Subnet @i:</h5>
-	<input type="number" value="@numHosts[i+1]" min="1" max="@numHosts[i]" @oninput="(e) => setlist(i+1, e)" />
-	<br>
+<input type="number" value="@numHosts[0]" min="1" max="9999" @oninput="(e) => setlist(0, e)" />
+<br />
+@if(numSubnets > 1) {
+	@foreach (var i in Enumerable.Range(1, numSubnets-1))
+	{
+		<h5 style="display:inline-block;">Subnet @(i): </h5>
+		<input type="number" value="@numHosts[i]" min="1" max="@numHosts[i-1]" @oninput="(e) => setlist(i, e)" />
+		<br>
+	}
 }
-
 <button type="button" name="calculate" @onclick="@(e => {subnets = SubnetCalculator.Calculate(new NetAddress(baseNetAddr),numHosts); calculatedNumSubnets = numSubnets;})">Calculate</button>
+<br />
 <br />
 
 @foreach (var i in Enumerable.Range(0, calculatedNumSubnets)) {
