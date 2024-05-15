@@ -44,7 +44,7 @@
 	private string selectedValue = "Use Subnet Mask";
 	private byte[] baseNetAddr = new byte[]{192, 168, 1, 0};
 	private int numSubnets = 1;
-	private int calculatedNumSubnets = 0;
+	private int calculatedNumSubnets = 1;
 	private List<int> numHosts = new List<int>() { 1 };
 	private Subnet[] subnets = new Subnet[1] { new Subnet(new NetAddress(new byte[] { 192, 168, 1, 0 }), new NetAddress(new byte[] { 255, 255, 255, 0 })) };
 
