@@ -59,7 +59,7 @@
 	}
 	private void setlist(int i, ChangeEventArgs e)
 	{
-		var n = 0;
+		var n = 1;
 		if (Int32.TryParse(e.Value.ToString(), out int auxn)) n = auxn;
 		numHosts[i] = n;
 	}
