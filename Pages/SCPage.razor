@@ -6,42 +6,21 @@
 <h1>Subnet Calculator</h1>
 
 <h3>Base Network Address</h3> <br />
-<input type="text" id="baseNetAddr1" @bind="baseNetAddr[0]" size="3" /> . 
-<input type="text" id="baseNetAddr2" @bind="baseNetAddr[1]" size="3" /> .
-<input type="text" id="baseNetAddr3" @bind="baseNetAddr[2]" size="3" /> .
-<input type="text" id="baseNetAddr4" @bind="baseNetAddr[3]" size="3" />
+<input type="text" id="baseNetAddr1" @bind="baseNetAddr[0]" size="3" min="0" max="255" /> . 
+<input type="text" id="baseNetAddr2" @bind="baseNetAddr[1]" size="3" min="0" max="255" /> .
+<input type="text" id="baseNetAddr3" @bind="baseNetAddr[2]" size="3" min="0" max="255" /> .
+<input type="text" id="baseNetAddr4" @bind="baseNetAddr[3]" size="3" min="0" max="255" />
 <br /> <br />
 
-<h3>Subnet Mask/CIDR</h3>
-@*Option to switch between subnetmask and CIDR*@
-<button type="button" name="selectedValue" @onclick="@(e => {if(selectedValue=="Use Subnet Mask") {selectedValue = "Use CIDR";}else{selectedValue = "Use Subnet Mask";}})">@selectedValue</button>
-<br />
-@if (selectedValue == "Use CIDR")
-{
-	<div id="subnetMaskIn" >
-		<input type="text" id="subnetMask1" value="255" size="3" /> . 
-		<input type="text" id="subnetMask2" value="255" size="3" /> . 
-		<input type="text" id="subnetMask3" value="255" size="3" /> . 
-		<input type="text" id="subnetMask4" value="0" size="3" />
-	</div>
-}
-else
-{
-	<div id="cidrIn" >
-		<input type="text" id="cidr" value="24" size="3"/>
-	</div>
-}
-
-<br />
-<br />
 <h3>Host Requirements</h3>
 <h4 style="display:inline-block;">Number of Subnets:</h4>
-<input type="number" value="@numSubnets" @oninput="onchange_numSubnets" />
+<input type="number" value="@numSubnets" min="1" @oninput="onchange_numSubnets" />
 <h4>Number of Hosts in</h4>
-@foreach (var i in Enumerable.Range(0, numSubnets))
+<h5 style="display:inline-block;">Subnet @i:</h5>
+<input type="number" value="@numHosts[i]" min="1" @oninput="(e) => setlist(i, e)" />
+@foreach (var i in Enumerable.Range(1, numSubnets))
 {
-	<h5 style="display:inline-block;">Subnet @i:</h5>
-	<input type="number" value="@numHosts[i]" @oninput="(e) => setlist(i, e)" />
+	<input type="number" value="@numHosts[i]" min="1" max="@numHosts[i-1]" @oninput="(e) => setlist(i, e)" />
 	<br>
 }
 
