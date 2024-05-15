@@ -17,7 +17,7 @@
 <input type="number" value="@numSubnets" min="1" @oninput="onchange_numSubnets" />
 <h4>Number of Hosts in</h4>
 <h5 style="display:inline-block;">Subnet 0:</h5>
-<input type="number" value="@numHosts[i]" min="1" @oninput="(e) => setlist(i, e)" />
+<input type="number" value="@numHosts[0]" min="1" @oninput="(e) => setlist(0, e)" />
 @foreach (var i in Enumerable.Range(1, numSubnets))
 {
 	<h5 style="display:inline-block;">Subnet @i:</h5>
