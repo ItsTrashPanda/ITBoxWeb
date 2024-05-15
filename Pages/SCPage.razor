@@ -18,10 +18,10 @@
 <h4>Number of Hosts in</h4>
 <h5 style="display:inline-block;">Subnet 0:</h5>
 <input type="number" value="@numHosts[0]" min="1" @oninput="(e) => setlist(0, e)" />
-@foreach (var i in Enumerable.Range(1, numSubnets))
+@foreach (var i in Enumerable.Range(0, numSubnets))
 {
 	<h5 style="display:inline-block;">Subnet @i:</h5>
-	<input type="number" value="@numHosts[i]" min="1" max="@numHosts[i-1]+1" @oninput="(e) => setlist(i, e)" />
+	<input type="number" value="@numHosts[i+1]" min="1" max="@numHosts[i]" @oninput="(e) => setlist(i+1, e)" />
 	<br>
 }
 
@@ -45,7 +45,7 @@
 	private byte[] baseNetAddr = new byte[]{192, 168, 1, 0};
 	private int numSubnets = 1;
 	private int calculatedNumSubnets = 0;
-	private List<int> numHosts = new List<int>() { 0 };
+	private List<int> numHosts = new List<int>() { 1 };
 	private Subnet[] subnets = new Subnet[1] { new Subnet(new NetAddress(new byte[] { 192, 168, 1, 0 }), new NetAddress(new byte[] { 255, 255, 255, 0 })) };
 
 	//dynamic input
